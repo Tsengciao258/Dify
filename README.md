@@ -1,2 +1,2 @@
-# Dify
+# DifyPractice
 本文档分享了自己制作的一些实用的dify工作流
