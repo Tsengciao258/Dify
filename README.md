@@ -24,7 +24,16 @@
 2.workflow编排
 
 在工作室栏创建新应用。选择知识检索节点，在知识检索中插入知识库和开始中的查询变量。
-![image]()
+![image](https://github.com/Tsengciao258/Dify-workflow-practice/blob/main/%E6%96%BD%E5%B7%A5%E5%8A%A9%E7%90%86%E9%99%84%E4%BB%B6/%E7%9F%A5%E8%AF%86%E6%A3%80%E7%B4%A2.png)
+
+随后在插入一个LLM节点进行问题分类，在提示词中要求大语言模型对针对知识库的问题作出特定的回答，以便随后的ifelse路径分叉。
+![image](https://github.com/Tsengciao258/Dify-workflow-practice/blob/main/%E6%96%BD%E5%B7%A5%E5%8A%A9%E7%90%86%E9%99%84%E4%BB%B6/%E9%97%AE%E9%A2%98%E5%88%86%E7%B1%BB.png)
+
+在ifelse节点中，接入分类后的路径，并在ifelse节点中选择问题分类产出的上下文进行分类，注意对逻辑的判断。
+![image](https://github.com/Tsengciao258/Dify-workflow-practice/blob/main/%E6%96%BD%E5%B7%A5%E5%8A%A9%E7%90%86%E9%99%84%E4%BB%B6/ifelse.png)
+
+最后在不同的路径接入大语言模型和工具节点进行问题的分析和处理，注意提醒用户问题的答案来源，以便用户对答案的可靠性做出判断。
+![image](https://github.com/Tsengciao258/Dify-workflow-practice/blob/main/%E6%96%BD%E5%B7%A5%E5%8A%A9%E7%90%86%E9%99%84%E4%BB%B6/final.png)
 
 
 
