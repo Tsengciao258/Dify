@@ -1,0 +1,438 @@
+app:
+  description: ''
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  mode: advanced-chat
+  name: 施工助手
+  use_icon_as_answer_icon: false
+kind: app
+version: 0.1.3
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      fileUploadConfig:
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        image_file_size_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: ''
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        sourceType: start
+        targetType: knowledge-retrieval
+      id: 1732187671970-source-1732187681259-target
+      selected: false
+      source: '1732187671970'
+      sourceHandle: source
+      target: '1732187681259'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: knowledge-retrieval
+        targetType: llm
+      id: 1732187681259-source-llm-target
+      selected: false
+      source: '1732187681259'
+      sourceHandle: source
+      target: llm
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: llm
+        targetType: answer
+      id: 1732208631535-source-1732208749349-target
+      source: '1732208631535'
+      sourceHandle: source
+      target: '1732208749349'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: tool
+        targetType: llm
+      id: 1732208825306-source-1732209101043-target
+      source: '1732208825306'
+      sourceHandle: source
+      target: '1732209101043'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: llm
+        targetType: answer
+      id: 1732209101043-source-1732209238809-target
+      source: '1732209101043'
+      sourceHandle: source
+      target: '1732209238809'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: if-else
+        targetType: tool
+      id: 1732210070470-true-1732208825306-target
+      source: '1732210070470'
+      sourceHandle: 'true'
+      target: '1732208825306'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: if-else
+        targetType: llm
+      id: 1732210070470-false-1732208631535-target
+      source: '1732210070470'
+      sourceHandle: 'false'
+      target: '1732208631535'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: llm
+        targetType: if-else
+      id: llm-source-1732210070470-target
+      source: llm
+      sourceHandle: source
+      target: '1732210070470'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        desc: ''
+        selected: false
+        title: 开始
+        type: start
+        variables: []
+      height: 53
+      id: '1732187671970'
+      position:
+        x: 30
+        y: 262.5
+      positionAbsolute:
+        x: 30
+        y: 262.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        context:
+          enabled: true
+          variable_selector:
+          - '1732187681259'
+          - result
+        desc: ''
+        memory:
+          role_prefix:
+            assistant: ''
+            user: ''
+          window:
+            enabled: false
+            size: 10
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: gpt-4o
+          provider: azure_openai
+        prompt_template:
+        - id: f2b98bf1-ee38-45d7-a196-12d2e23e4c7a
+          role: system
+          text: "基于上下文和用户的问题，判断问题是否与上下文相关。\n回答采用json数据格式，直接输出json。不要用markdown语法。\n\
+            \n如果与上下文是相关的，回答\n{ \n\"related\":true\n}\n如果与上下文不是相关的，则回答\n{ \n\"related\"\
+            :false\n}\n\n上下文：{{#context#}}\n用户问题：{{#sys.query#}}\n\n"
+        selected: false
+        title: 问题分类
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 97
+      id: llm
+      position:
+        x: 636
+        y: 262.5
+      positionAbsolute:
+        x: 636
+        y: 262.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        dataset_ids:
+        - a39b98db-dc29-4bb8-9571-764ea2fc6478
+        desc: ''
+        multiple_retrieval_config:
+          reranking_enable: true
+          reranking_mode: reranking_model
+          top_k: 4
+        query_variable_selector:
+        - '1732187671970'
+        - sys.query
+        retrieval_mode: multiple
+        selected: false
+        title: 知识检索
+        type: knowledge-retrieval
+      height: 91
+      id: '1732187681259'
+      position:
+        x: 333
+        y: 262.5
+      positionAbsolute:
+        x: 333
+        y: 262.5
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        context:
+          enabled: true
+          variable_selector:
+          - '1732187681259'
+          - result
+        desc: ''
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: gpt-4o
+          provider: azure_openai
+        prompt_template:
+        - id: 0f115e5b-470a-48a2-bf67-e939175003ff
+          role: system
+          text: '任务：根据上下文，回答用户的问题。
+
+            要求：只回答和上下文有关的问题，并告诉用户，回答的内容是基于已上传的知识库的。
+
+
+            上下文：{{#context#}}
+
+            用户问题：{{#sys.query#}}'
+        selected: false
+        title: 基于知识库的回答
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 97
+      id: '1732208631535'
+      position:
+        x: 1242
+        y: 262.5
+      positionAbsolute:
+        x: 1242
+        y: 262.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        answer: '{{#1732208631535.text#}}'
+        desc: ''
+        selected: false
+        title: 直接回复
+        type: answer
+        variables: []
+      height: 102
+      id: '1732208749349'
+      position:
+        x: 1545
+        y: 262.5
+      positionAbsolute:
+        x: 1545
+        y: 262.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        desc: ''
+        provider_id: bing
+        provider_name: bing
+        provider_type: builtin
+        selected: false
+        title: 必应网页搜索
+        tool_configurations:
+          enable_computation: 0
+          enable_entities: 1
+          enable_news: 0
+          enable_related_search: 0
+          enable_webpages: 1
+          language: zh-hans
+          limit: 5
+          market: CN
+          result_type: text
+        tool_label: 必应网页搜索
+        tool_name: bing_web_search
+        tool_parameters:
+          query:
+            type: mixed
+            value: '{{#sys.query#}}'
+        type: tool
+      height: 297
+      id: '1732208825306'
+      position:
+        x: 1242
+        y: 399.5
+      positionAbsolute:
+        x: 1242
+        y: 399.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        context:
+          enabled: true
+          variable_selector:
+          - '1732208825306'
+          - text
+        desc: ''
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: gpt-4o
+          provider: azure_openai
+        prompt_template:
+        - id: acf2a1c6-9f22-4237-a818-740b66707cf6
+          role: system
+          text: '任务:基于上下文，回答用户的问题。
+
+            要求：提醒用户因已上传的知识库中没有相关问题的答案，所以该问题的答案是基于必应搜索的。必须用汉语回答。
+
+
+            上下文:{{#context#}}
+
+
+            用户问题：{{#sys.query#}}'
+        selected: false
+        title: 基于网页搜索的回答
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 97
+      id: '1732209101043'
+      position:
+        x: 1545
+        y: 502
+      positionAbsolute:
+        x: 1545
+        y: 502
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        answer: '{{#1732209101043.text#}}'
+        desc: ''
+        selected: false
+        title: 直接回复 2
+        type: answer
+        variables: []
+      height: 102
+      id: '1732209238809'
+      position:
+        x: 1848
+        y: 499.5
+      positionAbsolute:
+        x: 1848
+        y: 499.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        cases:
+        - case_id: 'true'
+          conditions:
+          - comparison_operator: contains
+            id: 9dbc9837-2b47-4e3f-88d0-0bb6f9746cd1
+            value: 'false'
+            varType: string
+            variable_selector:
+            - llm
+            - text
+          id: 'true'
+          logical_operator: and
+        desc: ''
+        selected: false
+        title: 条件分支
+        type: if-else
+      height: 125
+      id: '1732210070470'
+      position:
+        x: 939
+        y: 262.5
+      positionAbsolute:
+        x: 939
+        y: 262.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    viewport:
+      x: 0
+      y: 0
+      zoom: 0.7
