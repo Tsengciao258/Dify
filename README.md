@@ -8,3 +8,7 @@
 
 示例：
 ![image](https://github.com/Tsengciao258/Dify-workflow-practice/blob/main/%E6%96%BD%E5%B7%A5%E5%8A%A9%E7%90%86%E9%99%84%E4%BB%B6/%E7%A4%BA%E4%BE%8B.png)
+
+二、制作流程
+
+1.创建知识库:
